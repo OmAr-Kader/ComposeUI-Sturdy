@@ -1,0 +1,8 @@
+jdk:
+  - openjdk17
+
+install:
+  - ./gradlew clean assemble publishToMavenLocal
+
+script:
+  - echo "Skipping default Javadoc generation"
