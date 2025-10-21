@@ -34,6 +34,7 @@ androidx-window = { module = "androidx.window:window", version.ref = "window" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 coil3-image = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil3-video = { module = "io.coil-kt.coil3:coil-video", version.ref = "coil" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
