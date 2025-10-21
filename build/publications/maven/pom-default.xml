@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.OmAr-Kader</groupId>
   <artifactId>ComposeUI-Sturdy</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>aar</packaging>
   <name>ComposeUI-Sturdy</name>
   <description>Library Description</description>
@@ -103,6 +103,41 @@
       <groupId>io.coil-kt.coil3</groupId>
       <artifactId>coil-video</artifactId>
       <version>3.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-client-core</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-client-okhttp</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-client-logging</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-client-cio</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-serialization-kotlinx-json</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-client-serialization</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>io.ktor</groupId>
+      <artifactId>ktor-client-content-negotiation</artifactId>
+      <version>3.3.1</version>
     </dependency>
   </dependencies>
 </project>

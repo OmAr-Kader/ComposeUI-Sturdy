@@ -8,7 +8,7 @@ plugins {
     //id("org.jetbrains.dokka") version "2.1.0"
 }
 
-val libVersion = "1.0.0" // VERSION + README.md Version + ANY NEW DEP
+val libVersion = "1.0.1" // VERSION + README.md Version + UPDATE libs.versions.toml
 val libVersionsToml = "libs.versions.toml" // UPDATE
 val libName = "ComposeUI-Sturdy"
 
