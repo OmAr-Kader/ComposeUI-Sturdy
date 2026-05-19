@@ -4,10 +4,11 @@ import org.tomlj.Toml
 import java.nio.file.Files
 
 plugins {
+    id("base")
     id("maven-publish")
 }
 
-val libVersion = "1.0.6-alpha1" // VERSION + README.md Version + UPDATE libs.versions.toml
+val libVersion = "1.0.6-alpha2" // VERSION + README.md Version + UPDATE libs.versions.toml
 val libVersionsToml = "libs.versions.toml" // UPDATE
 val libName = "ComposeUI-Sturdy"
 
