@@ -31,8 +31,7 @@ publishing {
             artifact(file("$libName-$libVersion.aar"))
 
             artifact(file("$libName-$libVersion-javadoc.jar")) {
-                classifier = "javadoc"
-                extension = "jar"
+                builtBy()  // ✅ Just reference the file as-is
             }
             artifact(file("$libName-$libVersion-sources.jar")) {
                 classifier = "sources"
