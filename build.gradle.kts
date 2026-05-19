@@ -58,7 +58,17 @@ publishing {
                     developerConnection.set("scm:git:ssh://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
                     url.set("https://github.com/OmAr-Kader/ComposeUI-Sturdy")
                 }
+
+                // 🔥 FIX: Force Android Studio to use javadoc.jar, NOT look for sources.jar
                 withXml {
+                    val root = asNode()
+
+                    // Add properties that tell Maven/Gradle/Android Studio:
+                    // Skip sources lookup, use javadoc
+                    val properties = root.appendNode("properties")
+                    properties.appendNode("maven.source.skip", "true")
+                    properties.appendNode("maven.javadoc.skip", "false")
+
                     fetchDependencies()
                 }
             }
