@@ -6,7 +6,7 @@ plugins {
     id("base")
     id("maven-publish")
 }
-val libVersion = "1.0.6-alpha13" // VERSION + README.md Version + UPDATE libs.versions.toml
+val libVersion = "1.0.6-alpha14" // VERSION + README.md Version + UPDATE libs.versions.toml
 val libVersionsToml = "libs.versions.toml" // UPDATE
 val libName = "ComposeUI-Sturdy"
 
