@@ -6,9 +6,7 @@ plugins {
     id("base")
     id("maven-publish")
 }
-//ComposeUI-Sturdy-1.0.6-alpha6-javadoc.aar
-//ComposeUI-Sturdy-1.0.6-alpha6-javadoc.jar
-val libVersion = "1.0.6-alpha8" // VERSION + README.md Version + UPDATE libs.versions.toml
+val libVersion = "1.0.6-alpha9" // VERSION + README.md Version + UPDATE libs.versions.toml
 val libVersionsToml = "libs.versions.toml" // UPDATE
 val libName = "ComposeUI-Sturdy"
 
