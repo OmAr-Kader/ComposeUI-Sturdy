@@ -6,7 +6,7 @@ plugins {
     id("base")
     id("maven-publish")
 }
-val libVersion = "1.0.6-alpha9" // VERSION + README.md Version + UPDATE libs.versions.toml
+val libVersion = "1.0.6-alpha10" // VERSION + README.md Version + UPDATE libs.versions.toml
 val libVersionsToml = "libs.versions.toml" // UPDATE
 val libName = "ComposeUI-Sturdy"
 
@@ -29,7 +29,7 @@ publishing {
             artifact(file("$libName-$libVersion.aar"))
 
             artifact(file("$libName-$libVersion-javadoc.jar")) {
-                builtBy()  // ✅ Just reference the file as-is
+                classifier = "javadoc"
             }
             artifact(file("$libName-$libVersion-sources.jar")) {
                 classifier = "sources"
