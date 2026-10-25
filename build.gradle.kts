@@ -6,7 +6,7 @@ plugins {
     id("base")
     id("maven-publish")
 }
-val libVersion = "1.0.7" // VERSION + README.md Version + UPDATE libs.versions.toml
+val libVersion = "1.0.8-alpha-1" // VERSION + README.md Version + UPDATE libs.versions.toml
 val libVersionsToml = "libs.versions.toml" // UPDATE
 val libName = "ComposeUI-Sturdy"
 
@@ -33,6 +33,9 @@ publishing {
             }
             artifact(file("$libName-$libVersion-sources.jar")) {
                 classifier = "sources"
+            }
+            artifact(file("$libName-$libVersion-dimenscale.jar")) {      // add
+                classifier = "dimenscale"
             }
             pom {
                 packaging = "aar"
