@@ -6,7 +6,7 @@ plugins {
     id("base")
     id("maven-publish")
 }
-val libVersion = "1.0.8-alpha-2" // VERSION + README.md Version + UPDATE libs.versions.toml
+val libVersion = "1.0.8-alpha-3" // VERSION + README.md Version + UPDATE libs.versions.toml
 val libVersionsToml = "libs.versions.toml" // UPDATE
 val libName = "ComposeUI-Sturdy"
 
@@ -75,45 +75,41 @@ publishing {
                     fetchDependencies()
                 }
             }
+        }
 
-            // Standalone Gradle plugin artifact. Intentionally do not copy the
-            // Android library POM dependencies into this publication.
-            create<MavenPublication>("dimenscalePlugin") {
-                groupId = "com.github.OmAr-Kader"
-                artifactId = "$libName-dimenscale"
-                version = libVersion
+        // Standalone plugin artifact: same group as the Android library,
+        // artifactId "dimenscale", and no AndroidX/AAR dependencies in its POM.
+        create<MavenPublication>("dimenscalePlugin") {
+            groupId = "com.github.OmAr-Kader.ComposeUI-Sturdy"
+            artifactId = "dimenscale"
+            version = libVersion
 
-                artifact(file("$libName-$libVersion-dimenscale.jar")) {
-                    // Publish as the primary artifact, not as a classifier.
-                    classifier = null
+            // Use the prebuilt merged JAR as this publication's main artifact.
+            // Do not apply a classifier to it.
+            artifact(file("$libName-$libVersion-dimenscale.jar"))
+
+            pom {
+                packaging = "jar"
+                name.set("DimenScale Gradle Plugin")
+                description.set("Standalone DimenScale Gradle and compiler plugin")
+                url.set("https://github.com/OmAr-Kader/ComposeUI-Sturdy")
+                licenses {
+                    license {
+                        name.set("Apache-2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
                 }
-
-                pom {
-                    packaging = "jar"
-                    name.set("$libName DimenScale Plugin")
-                    description.set("Standalone DimenScale Gradle and compiler plugin")
+                developers {
+                    developer {
+                        id.set("OmAr-Kader")
+                        name.set("Omar Kader")
+                        url.set("https://github.com/OmAr-Kader")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
+                    developerConnection.set("scm:git:ssh://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
                     url.set("https://github.com/OmAr-Kader/ComposeUI-Sturdy")
-
-                    licenses {
-                        license {
-                            name.set("Apache-2.0")
-                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id.set("OmAr-Kader")
-                            name.set("Omar Kader")
-                            url.set("https://github.com/OmAr-Kader")
-                        }
-                    }
-
-                    scm {
-                        connection.set("scm:git:git://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
-                        developerConnection.set("scm:git:ssh://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
-                        url.set("https://github.com/OmAr-Kader/ComposeUI-Sturdy")
-                    }
                 }
             }
         }
