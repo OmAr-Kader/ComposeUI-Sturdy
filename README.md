@@ -3,4 +3,4 @@
 [![](https://jitpack.io/v/OmAr-Kader/ComposeUI-Sturdy.svg)](https://jitpack.io/#OmAr-Kader/ComposeUI-Sturdy)
 ![GitHub](https://img.shields.io/github/license/OmAr-Kader/ComposeUI-Sturdy)
 
-# [Document](https://javadoc.jitpack.io/com/github/OmAr-Kader/ComposeUI-Sturdy/1.0.7/javadoc/)
+# [Document](https://javadoc.jitpack.io/com/github/OmAr-Kader/ComposeUI-Sturdy/1.0.8/javadoc/)
