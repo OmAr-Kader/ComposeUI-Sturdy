@@ -10,14 +10,15 @@ plugins {
 
 val libVersionsToml = "libs.versions.toml"
 
-val libVersion = "1.1.2" // Keep in sync with README.md and libs.versions.toml.
+val libVersion = "1.1.3-alpha-1" // Keep in sync with README.md and libs.versions.toml.
 val libName = "ComposeUI-Sturdy"
 val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
 
 val idGroup = "com.github.OmAr-Kader"
 val composeArtifactId = "Core"
 val dimenScaleArtifactId = "Dimenscale"
-val dimenScalePluginId = "com.github.OmAr-Kader.Dimenscale"
+
+val dimenScalePluginId = "com.github.OmAr-Kader.ComposeUI-Sturdy"
 
 group = idGroup
 version = libVersion
@@ -38,9 +39,30 @@ publishing {
 
             pom {
                 packaging = "pom"
-                name.set("DimenScale Gradle Plugin Marker")
-                description.set("Plugin marker for DimenScale")
+                name.set("DimenScale Gradle Plugin")
+                description.set("Plugin marker for DimenScale Gradle Plugin")
                 url.set(libRepoUrl)
+
+                licenses {
+                    license {
+                        name.set("Apache-2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("OmAr-Kader")
+                        name.set("Omar Kader")
+                        url.set("https://github.com/OmAr-Kader")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
+                    developerConnection.set("scm:git:ssh://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
+                    url.set(libRepoUrl)
+                }
 
                 withXml {
                     val dependency = asNode()
