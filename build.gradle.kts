@@ -1,18 +1,20 @@
 // ./gradlew clean build publishToMavenLocal
 
 import org.tomlj.Toml
-import java.nio.file.Files
+//import java.nio.file.Files
 
 plugins {
     id("base")
     id("maven-publish")
 }
 
-val libVersion = "1.1.2-alpha-2" // Keep in sync with README.md and libs.versions.toml.
 val libVersionsToml = "libs.versions.toml"
+
+val libVersion = "1.1.2-alpha-3" // Keep in sync with README.md and libs.versions.toml.
 val libName = "ComposeUI-Sturdy"
 val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
-val idGroup = "com.github.OmAr-Kader.ComposeUI-Sturdy"
+val idGroup = "com.github.OmAr-Kader"
+
 
 group = idGroup
 version = libVersion
@@ -20,6 +22,7 @@ version = libVersion
 buildscript {
     dependencies {
         classpath("org.tomlj:tomlj:2.2.0")
+        classpath("org.checkerframework:checker-qual:3.55.1")
     }
 }
 
@@ -122,7 +125,7 @@ publishing {
 /**
  * Adds version-catalog dependencies to the generated POM.
  * BOMs must be declared under dependencyManagement with scope=import;
- * ordinary libraries belong under the top-level dependencies element.
+ * ordinary libraries belong under the top-level dependencie element.
  */
 fun XmlProvider.fetchDependencies() {
     val root = asNode()
@@ -132,7 +135,10 @@ fun XmlProvider.fetchDependencies() {
         "Version catalog not found: ${tomlFile.absolutePath}"
     }
 
-    val parsedToml = Files.newBufferedReader(tomlFile.toPath()).use { reader ->
+    /*val parsedToml = Files.newBufferedReader(tomlFile.toPath()).use { reader ->
+        Toml.parse(reader)
+    }*/
+    val parsedToml = tomlFile.bufferedReader(Charsets.UTF_8).use { reader ->
         Toml.parse(reader)
     }
 
@@ -159,11 +165,20 @@ fun XmlProvider.fetchDependencies() {
             "Invalid module '$module' in version catalog alias '$alias'. Expected group:artifact."
         }
 
-        val versionRef = library.getTable("version")?.getString("ref")
+        /*val versionRef = library.getTable("version")?.getString("ref")
             ?: library.getString("version.ref")
         val dependencyVersion = versionRef?.let { versions.getString(it) }
             ?: library.getString("version")
-            ?: return@forEach
+            ?: return@forEach*/
+
+        val versionRef: String? =
+            library.getTable("version")?.getString("ref")
+                ?: library.getString("version.ref")
+
+        val dependencyVersion: String =
+            versionRef?.let { versions.getString(it) }
+                ?: library.getString("version")
+                ?: return@forEach
 
         pomDependencies += PomDependency(
             groupId = moduleParts[0],
