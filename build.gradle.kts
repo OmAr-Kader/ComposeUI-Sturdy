@@ -1,7 +1,6 @@
 // ./gradlew clean build publishToMavenLocal
 
 import org.tomlj.Toml
-//import java.nio.file.Files
 
 plugins {
     id("base")
@@ -10,7 +9,7 @@ plugins {
 
 val libVersionsToml = "libs.versions.toml"
 
-val libVersion = "1.1.3-alpha-4" // Keep in sync with README.md and libs.versions.toml.
+val libVersion = "1.1.3" // Keep in sync with README.md and libs.versions.toml.
 val libName = "ComposeUI-Sturdy"
 val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
 
@@ -182,9 +181,6 @@ fun XmlProvider.fetchDependencies() {
         "Version catalog not found: ${tomlFile.absolutePath}"
     }
 
-    /*val parsedToml = Files.newBufferedReader(tomlFile.toPath()).use { reader ->
-        Toml.parse(reader)
-    }*/
     val parsedToml = tomlFile.bufferedReader(Charsets.UTF_8).use { reader ->
         Toml.parse(reader)
     }
@@ -211,12 +207,6 @@ fun XmlProvider.fetchDependencies() {
         require(moduleParts.size == 2) {
             "Invalid module '$module' in version catalog alias '$alias'. Expected group:artifact."
         }
-
-        /*val versionRef = library.getTable("version")?.getString("ref")
-            ?: library.getString("version.ref")
-        val dependencyVersion = versionRef?.let { versions.getString(it) }
-            ?: library.getString("version")
-            ?: return@forEach*/
 
         val versionRef: String? =
             library.getTable("version")?.getString("ref")
