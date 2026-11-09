@@ -17,6 +17,7 @@ val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
 val idGroup = "com.github.OmAr-Kader"
 val composeArtifactId = "Core"
 val dimenScaleArtifactId = "Dimenscale"
+val dimenScalePluginId = "com.github.OmAr-Kader.Dimenscale"
 
 group = idGroup
 version = libVersion
@@ -30,6 +31,28 @@ buildscript {
 
 publishing {
     publications {
+        create<MavenPublication>("dimenscalePluginMarker") {
+            groupId = dimenScalePluginId
+            artifactId = "$dimenScalePluginId.gradle.plugin"
+            version = libVersion
+
+            pom {
+                packaging = "pom"
+                name.set("DimenScale Gradle Plugin Marker")
+                description.set("Plugin marker for DimenScale")
+                url.set(libRepoUrl)
+
+                withXml {
+                    val dependency = asNode()
+                        .appendNode("dependencies")
+                        .appendNode("dependency")
+
+                    dependency.appendNode("groupId", idGroup)
+                    dependency.appendNode("artifactId", dimenScaleArtifactId)
+                    dependency.appendNode("version", libVersion)
+                }
+            }
+        }
         create<MavenPublication>("maven") {
             groupId = idGroup
             artifactId = composeArtifactId
