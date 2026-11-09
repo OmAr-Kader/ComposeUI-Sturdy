@@ -36,7 +36,7 @@ In `gradle/libs.versions.toml`:
 
 ```toml
 [versions]
-composeSturdy = "1.1.3-alpha-4"
+composeSturdy = "1.1.3"
 
 [libraries]
 compose-sturdy = { module = "com.github.OmAr-Kader.ComposeUI-Sturdy:Core", version.ref = "composeSturdy" }
