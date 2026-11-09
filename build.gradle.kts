@@ -6,9 +6,12 @@ plugins {
     id("base")
     id("maven-publish")
 }
-val libVersion = "1.1.1" // VERSION + README.md Version + UPDATE libs.versions.toml
+val libVersion = "1.1.2-alpha-1" // VERSION + README.md Version + UPDATE libs.versions.toml
 val libVersionsToml = "libs.versions.toml" // UPDATE
 val libName = "ComposeUI-Sturdy"
+
+val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
+val idGroup = "com.github.OmAr-Kader.ComposeUI-Sturdy"
 
 group = "com.github.OmAr-Kader"
 version = libVersion
@@ -22,7 +25,7 @@ buildscript {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.github.OmAr-Kader"
+            groupId = idGroup
             artifactId = libName
             version = libVersion
 
@@ -41,7 +44,7 @@ publishing {
                 packaging = "aar"
                 name.set(libName)
                 description.set("Library Description")
-                url.set("https://github.com/OmAr-Kader/ComposeUI-Sturdy")
+                url.set(libRepoUrl)
                 licenses {
                     license {
                         name.set("Apache-2.0")
@@ -59,7 +62,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
                     developerConnection.set("scm:git:ssh://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
-                    url.set("https://github.com/OmAr-Kader/ComposeUI-Sturdy")
+                    url.set(libRepoUrl)
                 }
 
                 // 🔥 FIX: Force Android Studio to use javadoc.jar, NOT look for sources.jar
@@ -80,7 +83,7 @@ publishing {
         // Standalone plugin artifact: same group as the Android library,
         // artifactId "dimenscale", and no AndroidX/AAR dependencies in its POM.
         create<MavenPublication>("dimenscalePlugin") {
-            groupId = "com.github.OmAr-Kader.ComposeUI-Sturdy"
+            groupId = idGroup
             artifactId = "dimenscale"
             version = libVersion
 
@@ -92,7 +95,7 @@ publishing {
                 packaging = "jar"
                 name.set("DimenScale Gradle Plugin")
                 description.set("Standalone DimenScale Gradle and compiler plugin")
-                url.set("https://github.com/OmAr-Kader/ComposeUI-Sturdy")
+                url.set(libRepoUrl)
                 licenses {
                     license {
                         name.set("Apache-2.0")
@@ -109,7 +112,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
                     developerConnection.set("scm:git:ssh://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
-                    url.set("https://github.com/OmAr-Kader/ComposeUI-Sturdy")
+                    url.set(libRepoUrl)
                 }
             }
         }
