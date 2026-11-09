@@ -10,13 +10,12 @@ plugins {
 
 val libVersionsToml = "libs.versions.toml"
 
-val libVersion = "1.1.2-alpha-4" // Keep in sync with README.md and libs.versions.toml.
+val libVersion = "1.1.2" // Keep in sync with README.md and libs.versions.toml.
 val libName = "ComposeUI-Sturdy"
 val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
-//val idGroup = "com.github.OmAr-Kader"
 
-val idGroup = "com.github.OmAr-Kader.Sturdy"
-val composeArtifactId = "Compose"
+val idGroup = "com.github.OmAr-Kader"
+val composeArtifactId = "Core"
 val dimenScaleArtifactId = "Dimenscale"
 
 group = idGroup
