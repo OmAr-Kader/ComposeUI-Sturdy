@@ -42,9 +42,10 @@ jobs:
         run: |
           V="${{ steps.version.outputs.version }}"
           FLAGS=""
-          case "$V" in *-*) FLAGS="--prerelease" ;; esac
+          case "$V" in *alpha*) FLAGS="--prerelease" ;; esac
+          git log -1 --pretty=%B > notes.md
           gh release create "v$V" \
             --target "$GITHUB_SHA" \
-            --title "v$V" \
-            --generate-notes \
+            --title "$V" \
+            --notes-file notes.md \
             $FLAGS
