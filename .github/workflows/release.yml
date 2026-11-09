@@ -29,7 +29,7 @@ jobs:
       - name: Check if tag exists
         id: tag
         run: |
-          if git ls-remote --exit-code --tags origin "refs/tags/v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+          if git ls-remote --exit-code --tags origin "refs/tags/${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
@@ -44,7 +44,7 @@ jobs:
           FLAGS=""
           case "$V" in *alpha*) FLAGS="--prerelease" ;; esac
           git log -1 --pretty=%B > notes.md
-          gh release create "v$V" \
+          gh release create "$V" \
             --target "$GITHUB_SHA" \
             --title "$V" \
             --notes-file notes.md \

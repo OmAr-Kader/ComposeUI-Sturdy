@@ -10,7 +10,7 @@ plugins {
 
 val libVersionsToml = "libs.versions.toml"
 
-val libVersion = "1.1.3-alpha-3" // Keep in sync with README.md and libs.versions.toml.
+val libVersion = "1.1.3-alpha-4" // Keep in sync with README.md and libs.versions.toml.
 val libName = "ComposeUI-Sturdy"
 val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
 
@@ -69,7 +69,7 @@ publishing {
                         .appendNode("dependencies")
                         .appendNode("dependency")
 
-                    dependency.appendNode("groupId", idGroup)
+                    dependency.appendNode("groupId", dimenScalePluginId)
                     dependency.appendNode("artifactId", dimenScaleArtifactId)
                     dependency.appendNode("version", libVersion)
                 }
@@ -81,17 +81,17 @@ publishing {
             version = libVersion
 
             // These are prebuilt files in the public project's root directory.
-            artifact(file("$libName-$libVersion.aar"))
+            artifact(file("$libName.aar"))
 
-            artifact(file("$libName-$libVersion-javadoc.jar")) {
+            artifact(file("$libName-javadoc.jar")) {
                 classifier = "javadoc"
             }
 
-            artifact(file("$libName-$libVersion-sources.jar")) {
+            artifact(file("$libName-sources.jar")) {
                 classifier = "sources"
             }
 
-            artifact(file("$libName-$libVersion-dimenscale.jar")) {
+            artifact(file("$libName-dimenscale.jar")) {
                 classifier = "dimenscale"
             }
 
@@ -136,7 +136,7 @@ publishing {
             artifactId = dimenScaleArtifactId
             version = libVersion
 
-            artifact(file("$libName-$libVersion-dimenscale.jar"))
+            artifact(file("$libName-dimenscale.jar"))
 
             pom {
                 packaging = "jar"
