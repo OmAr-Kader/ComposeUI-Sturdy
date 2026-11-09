@@ -1,4 +1,5 @@
 // ./gradlew clean build publishToMavenLocal
+
 import org.tomlj.Toml
 import java.nio.file.Files
 
@@ -6,19 +7,19 @@ plugins {
     id("base")
     id("maven-publish")
 }
-val libVersion = "1.1.2-alpha-1" // VERSION + README.md Version + UPDATE libs.versions.toml
-val libVersionsToml = "libs.versions.toml" // UPDATE
-val libName = "ComposeUI-Sturdy"
 
+val libVersion = "1.1.2-alpha-2" // Keep in sync with README.md and libs.versions.toml.
+val libVersionsToml = "libs.versions.toml"
+val libName = "ComposeUI-Sturdy"
 val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
 val idGroup = "com.github.OmAr-Kader.ComposeUI-Sturdy"
 
-group = "com.github.OmAr-Kader"
+group = idGroup
 version = libVersion
 
 buildscript {
     dependencies {
-        classpath("org.tomlj:tomlj:1.1.1")
+        classpath("org.tomlj:tomlj:2.2.0")
     }
 }
 
@@ -29,28 +30,34 @@ publishing {
             artifactId = libName
             version = libVersion
 
+            // These are prebuilt files in the public project's root directory.
             artifact(file("$libName-$libVersion.aar"))
 
             artifact(file("$libName-$libVersion-javadoc.jar")) {
                 classifier = "javadoc"
             }
+
             artifact(file("$libName-$libVersion-sources.jar")) {
                 classifier = "sources"
             }
-            artifact(file("$libName-$libVersion-dimenscale.jar")) {      // add
+
+            artifact(file("$libName-$libVersion-dimenscale.jar")) {
                 classifier = "dimenscale"
             }
+
             pom {
                 packaging = "aar"
                 name.set(libName)
-                description.set("Library Description")
+                description.set("Compose UI library for Android - Bridge to SturdyRoot")
                 url.set(libRepoUrl)
+
                 licenses {
                     license {
                         name.set("Apache-2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
+
                 developers {
                     developer {
                         id.set("OmAr-Kader")
@@ -65,30 +72,20 @@ publishing {
                     url.set(libRepoUrl)
                 }
 
-                // 🔥 FIX: Force Android Studio to use javadoc.jar, NOT look for sources.jar
+                // Do not add maven.source.skip: it is unrelated to Gradle/Android Studio
+                // attaching the already-published *-sources.jar.
                 withXml {
-                    val root = asNode()
-
-                    // Add properties that tell Maven/Gradle/Android Studio:
-                    // Skip sources lookup, use javadoc
-                    val properties = root.appendNode("properties")
-                    properties.appendNode("maven.source.skip", "true")
-                    properties.appendNode("maven.javadoc.skip", "false")
-
                     fetchDependencies()
                 }
             }
         }
 
-        // Standalone plugin artifact: same group as the Android library,
-        // artifactId "dimenscale", and no AndroidX/AAR dependencies in its POM.
+        // Publish DimenScale as a standalone JAR without the Android library dependencies.
         create<MavenPublication>("dimenscalePlugin") {
             groupId = idGroup
             artifactId = "dimenscale"
             version = libVersion
 
-            // Use the prebuilt merged JAR as this publication's main artifact.
-            // Do not apply a classifier to it.
             artifact(file("$libName-$libVersion-dimenscale.jar"))
 
             pom {
@@ -96,12 +93,14 @@ publishing {
                 name.set("DimenScale Gradle Plugin")
                 description.set("Standalone DimenScale Gradle and compiler plugin")
                 url.set(libRepoUrl)
+
                 licenses {
                     license {
                         name.set("Apache-2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
+
                 developers {
                     developer {
                         id.set("OmAr-Kader")
@@ -109,6 +108,7 @@ publishing {
                         url.set("https://github.com/OmAr-Kader")
                     }
                 }
+
                 scm {
                     connection.set("scm:git:git://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
                     developerConnection.set("scm:git:ssh://github.com/OmAr-Kader/ComposeUI-Sturdy.git")
@@ -119,42 +119,87 @@ publishing {
     }
 }
 
+/**
+ * Adds version-catalog dependencies to the generated POM.
+ * BOMs must be declared under dependencyManagement with scope=import;
+ * ordinary libraries belong under the top-level dependencies element.
+ */
 fun XmlProvider.fetchDependencies() {
-
-    val dependenciesNode = asNode().appendNode("dependencies")
-
-    // Path to your libs.versions.toml file
+    val root = asNode()
     val tomlFile = file(libVersionsToml)
 
-    // Parse the TOML file
-    val parsedToml = Toml.parse(Files.newBufferedReader(tomlFile.toPath()))
+    require(tomlFile.isFile) {
+        "Version catalog not found: ${tomlFile.absolutePath}"
+    }
 
-    // Get versions map
-    parsedToml.getTable("versions")?.also { versions ->
-        // Get libraries table
-        parsedToml.getTable("libraries")?.also { libsTable ->
-            libsTable.keySet().forEach { alias ->
-                libsTable.getTable(alias)?.also { libData ->
-                    val module = libData.getString("module")
-                    val versionRef = libData.getString("version.ref")
+    val parsedToml = Files.newBufferedReader(tomlFile.toPath()).use { reader ->
+        Toml.parse(reader)
+    }
 
-                    if (module != null && versionRef != null) {
-                        val (group, artifact) = module.split(":")
-                        val version = versions.getString(versionRef)
+    val versions = parsedToml.getTable("versions")
+        ?: error("[versions] table not found in $libVersionsToml")
+    val libraries = parsedToml.getTable("libraries")
+        ?: error("[libraries] table not found in $libVersionsToml")
 
-                        val depNode = dependenciesNode.appendNode("dependency")
-                        depNode.appendNode("groupId", group)
-                        depNode.appendNode("artifactId", artifact)
-                        depNode.appendNode("version", version)
-                        //depNode.appendNode("scope", "runtime")
-                        if (artifact.endsWith("-bom")) {
-                            depNode.appendNode("type", "pom")
-                            depNode.appendNode("scope", "import")
-                        }
-                    }
-                }
-            }
+    data class PomDependency(
+        val groupId: String,
+        val artifactId: String,
+        val version: String,
+        val isBom: Boolean
+    )
+
+    val pomDependencies = mutableListOf<PomDependency>()
+
+    libraries.keySet().forEach { alias ->
+        val library = libraries.getTable(alias) ?: return@forEach
+        val module = library.getString("module") ?: return@forEach
+        val moduleParts = module.split(":", limit = 2)
+
+        require(moduleParts.size == 2) {
+            "Invalid module '$module' in version catalog alias '$alias'. Expected group:artifact."
         }
 
+        val versionRef = library.getTable("version")?.getString("ref")
+            ?: library.getString("version.ref")
+        val dependencyVersion = versionRef?.let { versions.getString(it) }
+            ?: library.getString("version")
+            ?: return@forEach
+
+        pomDependencies += PomDependency(
+            groupId = moduleParts[0],
+            artifactId = moduleParts[1],
+            version = dependencyVersion,
+            isBom = moduleParts[1].endsWith("-bom")
+        )
+    }
+
+    val bomDependencies = pomDependencies.filter { it.isBom }
+    val regularDependencies = pomDependencies.filterNot { it.isBom }
+
+    // Maven POM element order: dependencyManagement must precede dependencies.
+    if (bomDependencies.isNotEmpty()) {
+        val managedDependencies = root
+            .appendNode("dependencyManagement")
+            .appendNode("dependencies")
+
+        bomDependencies.forEach { dependency ->
+            val node = managedDependencies.appendNode("dependency")
+            node.appendNode("groupId", dependency.groupId)
+            node.appendNode("artifactId", dependency.artifactId)
+            node.appendNode("version", dependency.version)
+            node.appendNode("type", "pom")
+            node.appendNode("scope", "import")
+        }
+    }
+
+    if (regularDependencies.isNotEmpty()) {
+        val dependenciesNode = root.appendNode("dependencies")
+
+        regularDependencies.forEach { dependency ->
+            val node = dependenciesNode.appendNode("dependency")
+            node.appendNode("groupId", dependency.groupId)
+            node.appendNode("artifactId", dependency.artifactId)
+            node.appendNode("version", dependency.version)
+        }
     }
 }
