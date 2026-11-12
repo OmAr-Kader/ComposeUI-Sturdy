@@ -9,7 +9,7 @@ plugins {
 
 val libVersionsToml = "libs.versions.toml"
 
-val libVersion = "1.1.3" // Keep in sync with README.md and libs.versions.toml.
+val libVersion = "1.1.4" // Keep in sync with README.md and libs.versions.toml.
 val libName = "ComposeUI-Sturdy"
 val libRepoUrl = "https://github.com/OmAr-Kader/ComposeUI-Sturdy"
 
